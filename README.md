@@ -3,6 +3,12 @@
 Simple python program backup and restore data from/to account
 Use full when you have to change account evey months.
 
+## First install dependency with pip
+```
+$ pip install -r requirements.txt
+```
+
+## Do your first backup
 ```
 $ python main.py
 usage: main.py [-h] (--backup | --restore) --user USER --password PASSWORD [--filename FILENAME]
@@ -12,7 +18,7 @@ $ python main --backup --user mail@address.com --pass 123456
 ```
 It will create a json file `tidal_favorites.json` with tidal favorites data
 
-to restore it 
+## Then restore it 
 ```
 $ python main --restore --user other_mail@address.com --pass 123456
 ```
