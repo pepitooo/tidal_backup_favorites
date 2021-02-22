@@ -67,7 +67,7 @@ def parse_args(args):
 
     parser.add_argument('--user', '-u', dest='user', required=True)
     parser.add_argument('--password', '-p', dest='password', required=True)
-    parser.add_argument('--output', '-o', dest='filename', default=None)
+    parser.add_argument('--filename', '-o', dest='filename', default=None)
 
     return parser.parse_args(args)
 
