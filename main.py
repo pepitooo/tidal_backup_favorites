@@ -57,11 +57,11 @@ def restore(session, filename):
 
 def parse_args(args):
     """
-        Parse command line parameters
+    Parse command line parameters
 
-        :param args: command line parameters as list of strings
-        :return: command line parameters as :obj:`argparse.Namespace`
-        """
+    :param args: command line parameters as list of strings
+    :return: command line parameters as :obj:`argparse.Namespace`
+    """
     parser = argparse.ArgumentParser(description="Backup/Restore Tidal tracks/albums/artist favorites")
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('--backup', '-b', action='store_true', help='Backup favorites')
@@ -89,5 +89,3 @@ def main(args):
 
 if __name__ == '__main__':
     main(sys.argv[1:])
-
-
