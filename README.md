@@ -11,14 +11,39 @@ $ pip install -r requirements.txt
 ## Do your first backup
 ```
 $ python main.py
-usage: main.py [-h] (--backup | --restore) --user USER --password PASSWORD [--filename FILENAME]
-main.py: error: the following arguments are required: --user/-u, --password/-p
+usage: main.py [-h] (--backup | --restore) [--ini INI] [--filename FILENAME]
+main.py: error: one of the arguments --backup/-b --restore/-c is required
 
-$ python main --backup --user mail@address.com --pass 123456
+$ python main --backup
 ```
-It will create a json file `tidal_favorites.json` with tidal favorites data
 
-## Then restore it 
+It will print a URL you have to visit for authentication and – after
+successful authentication – the configuration you can provide via an
+INI file for later runs:
+
 ```
-$ python main --restore --user other_mail@address.com --pass 123456
+authenticating new session
+Visit link.tidal.com/FOOBA to log in, the code will expire in 300 seconds
+To load the session next time you run this program, supply the following information via INI file:
+
+[session]
+id = …
+token_type = …
+access_token = …
+refresh_token = …
+```
+
+It will also create a json file `tidal_favorites.json` with tidal favorites data.
+
+On later runs, you can provide an INI file with the data mentioned
+above (e.g., in `config.ini`), so you don't have to authenticate
+manually again:
+
+```
+$ python main --backup --ini config.ini
+```
+
+## Then restore it
+```
+$ python main --restore  --ini config.ini
 ```

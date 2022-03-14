@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+from configparser import ConfigParser
 import json
 import sys
 
@@ -67,8 +68,7 @@ def parse_args(args):
     group.add_argument('--backup', '-b', action='store_true', help='Backup favorites')
     group.add_argument('--restore', '-c', action='store_true', help='Restore favorites')
 
-    parser.add_argument('--user', '-u', dest='user', required=True)
-    parser.add_argument('--password', '-p', dest='password', required=True)
+    parser.add_argument('--ini', '-i', dest='ini')
     parser.add_argument('--filename', '-o', dest='filename', default=None)
 
     return parser.parse_args(args)
@@ -76,10 +76,39 @@ def parse_args(args):
 
 def main(args):
     args_parsed = parse_args(args)
-    print(args_parsed)
 
     session = tidalapi.Session()
-    session.login(args_parsed.user, args_parsed.password)
+
+    if args_parsed.ini is not None:
+        config = ConfigParser()
+        config.read([args_parsed.ini])
+        try:
+            session.load_oauth_session(
+                config['session']['id'],
+                config['session']['token_type'],
+                config['session']['access_token'],
+                config['session'].get('refresh_token', None)
+            )
+        except KeyError:
+            print('supplied configuration to restore session is incomplete')
+        else:
+            if not session.check_login():
+                print('loaded session appears to be not authenticated')
+
+    if not session.check_login():
+        print('authenticating new session')
+        session.login_oauth_simple()
+
+        print('To load the session next time you run this program, '
+              'supply the following information via an INI file:')
+        print()
+        print(f'[session]')
+        print(f'id = {session.session_id }')
+        print(f'token_type = {session.token_type}')
+        print(f'access_token = {session.access_token}')
+        print(f'refresh_token = {session.refresh_token}')
+        print()
+
 
     if args_parsed.backup:
         backup(session, args_parsed.filename or 'tidal_favorites.json')
