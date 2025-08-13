@@ -84,7 +84,6 @@ def main(args):
         config.read([args_parsed.ini])
         try:
             session.load_oauth_session(
-                config['session']['id'],
                 config['session']['token_type'],
                 config['session']['access_token'],
                 config['session'].get('refresh_token', None)
